@@ -3,10 +3,10 @@ import { Market } from '../domain/Market'
 
 const allMarkets: Market[] = []
 
-export const createMarket: MarketRepository.CreateMarket = async (market) => {
+export const saveMarket: MarketRepository.SaveMarket = async (market) => {
   allMarkets.concat(market)
 }
 
-export const findMarket: MarketRepository.FindMarket = async (handle) => {
-  return allMarkets.find(market => market.handle === handle)
+export const findMarket: MarketRepository.FindMarket = async (id) => {
+  return allMarkets.find(market => market.id === id)
 }

@@ -8,11 +8,9 @@ export default [
     handler: async (req: Request, res: Response): Promise<void> => {
       const market = await createNewMarket(req.body.name)
 
-      console.log(market)
-
       res
         .status(201)
-        .location(`${req.url}/${market.handle}`)
+        .location(`${req.url}/${market.id}`)
         .end()
     }
   },
