@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { createNewMarket } from '../injected-usecase/market'
+import { createNewMarket, findMarket } from '../injected-usecase/market'
 
 export default [
   {
@@ -10,15 +10,22 @@ export default [
 
       res
         .status(201)
-        .location(`${req.url}/${market.id}`)
+        .location(`${req.path}${req.path.endsWith('/') ? '' : '/'}${market.id}`)
         .end()
     }
   },
   {
-    path: '/api/v1/markets',
+    path: '/api/v1/markets/:id',
     method: 'get',
     handler: async (req: Request, res: Response): Promise<void> => {
-      res.send('coucou')
+      const market = await findMarket(req.params.id)
+
+      if (!market) {
+        res.status(404).end()
+        return
+      }
+
+      res.json(market)
     }
   }
 ]
