@@ -1,9 +1,13 @@
-import * as MarketRepository from '../infra/InMemoryMarketRepository'
+import * as MarketRepository from '../domain/MarketRepository'
+import { Market } from '../domain/Market'
 
-export const createNewMarket = async (marketName: string): Promise<void> => {
-  const handle = 'azeazeazeaze'
-  await MarketRepository.createMarket({
-    handle,
-    name: marketName
-  })
+export const createNewMarketBuilder = (createMarket: MarketRepository.CreateMarket): (marketName: string) => Promise<Market> => {
+  return async (marketName: string): Promise<Market> => {
+    const market = {
+      handle: 'azeazeazeaze',
+      name: marketName
+    }
+    await createMarket(market)
+    return market
+  }
 }
