@@ -11,7 +11,7 @@ export default [
       res
         .status(201)
         .location(`${req.path}${req.path.endsWith('/') ? '' : '/'}${market.id}`)
-        .end()
+        .json(market)
     }
   },
   {
