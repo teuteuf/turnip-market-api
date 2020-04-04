@@ -2,6 +2,7 @@ import * as MarketRepository from '../domain/MarketRepository'
 import { Market } from '../domain/Market'
 import { DataTypes, Model } from 'sequelize'
 import { sequelize } from './Sequelize'
+import { Offer } from '../domain/Offer'
 
 sequelize.define('market', {
   id: {
@@ -85,17 +86,34 @@ SqlOffer.init({
 })
 
 export const saveMarket: MarketRepository.SaveMarket = async (market) => {
-  await SqlMarket.create(market)
+  await SqlMarket.create({
+    id: market.id,
+    name: market.name
+  })
 }
 
 export const findMarket: MarketRepository.FindMarket = async (id) => {
   const sqlMarket = await SqlMarket.findByPk(id)
-  return sqlMarket
-    ? {
-      id: sqlMarket.id as string,
-      name: sqlMarket.name as string
+  if (!sqlMarket) {
+    return undefined
+  }
+
+  const sqlOffers: SqlOffer[] = await SqlOffer.findAll({
+    where: {
+      marketId: id
     }
-    : undefined
+  })
+
+  return {
+    id: sqlMarket.id as string,
+    name: sqlMarket.name as string,
+    offers: sqlOffers.map((sqlOffer) => ({
+      player: sqlOffer.player,
+      startTime: sqlOffer.startTime,
+      endTime: sqlOffer.endTime,
+      price: sqlOffer.price
+    }))
+  }
 }
 
 export const addMarketOffer: MarketRepository.AddMarketOffer = async (marketId, offer) => {

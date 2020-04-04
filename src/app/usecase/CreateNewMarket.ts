@@ -9,7 +9,8 @@ export const createNewMarketBuilder = (
   return async (marketName: string): Promise<Market> => {
     const market: Market = {
       id: generateId(),
-      name: marketName
+      name: marketName,
+      offers: []
     }
     await saveMarket(market)
     return market
