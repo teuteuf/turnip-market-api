@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { createNewMarket, findMarket } from '../injected-usecase/market'
+import { addOffer, createNewMarket, findMarket } from '../injected-usecase/market'
 
 export default [
   {
@@ -26,6 +26,24 @@ export default [
       }
 
       res.json(market)
+    }
+  },
+  {
+    path: '/api/v1/markets/:id/offers',
+    method: 'post',
+    handler: async (req: Request, res: Response): Promise<void> => {
+      const market = await findMarket(req.params.id)
+
+      if (!market) {
+        res.status(404).end()
+        return
+      }
+
+      const offer = await addOffer(market, req.body)
+
+      res
+        .status(201)
+        .json(offer)
     }
   }
 ]

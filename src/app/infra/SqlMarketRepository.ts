@@ -39,6 +39,51 @@ SqlMarket.init({
   tableName: 'market'
 })
 
+class SqlOffer extends Model<SqlOffer> {
+  marketId!: string
+  player!: string
+  startTime!: Date
+  endTime!: Date
+  price!: number
+}
+
+SqlOffer.init({
+  marketId: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+    allowNull: false,
+    field: 'id_market'
+  },
+  player: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+    allowNull: false,
+    field: 'player'
+  },
+  startTime: {
+    type: DataTypes.TIME,
+    primaryKey: true,
+    allowNull: false,
+    field: 'start_time'
+  },
+  endTime: {
+    type: DataTypes.TIME,
+    primaryKey: true,
+    allowNull: false,
+    field: 'end_time'
+  },
+  price: {
+    type: DataTypes.SMALLINT,
+    allowNull: false,
+    field: 'price'
+  }
+}, {
+  sequelize,
+  createdAt: false,
+  updatedAt: false,
+  tableName: 'offer'
+})
+
 export const saveMarket: MarketRepository.SaveMarket = async (market) => {
   await SqlMarket.create(market)
 }
@@ -51,4 +96,11 @@ export const findMarket: MarketRepository.FindMarket = async (id) => {
       name: sqlMarket.name as string
     }
     : undefined
+}
+
+export const addMarketOffer: MarketRepository.AddMarketOffer = async (marketId, offer) => {
+  await SqlOffer.create({
+    marketId: marketId,
+    ...offer
+  })
 }

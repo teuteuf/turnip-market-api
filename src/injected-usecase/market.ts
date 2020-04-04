@@ -2,6 +2,7 @@ import * as SqlMarketRepository from '../app/infra/SqlMarketRepository'
 import * as ShortIdGenerator from '../app/infra/ShortIdGenerator'
 import { createNewMarketBuilder } from '../app/usecase/CreateNewMarket'
 import { findMarketBuilder } from '../app/usecase/FindMarket'
+import { addOfferBuilder } from '../app/usecase/AddOffer'
 
 export const createNewMarket = createNewMarketBuilder(
   SqlMarketRepository.saveMarket,
@@ -10,4 +11,8 @@ export const createNewMarket = createNewMarketBuilder(
 
 export const findMarket = findMarketBuilder(
   SqlMarketRepository.findMarket
+)
+
+export const addOffer = addOfferBuilder(
+  SqlMarketRepository.addMarketOffer
 )
