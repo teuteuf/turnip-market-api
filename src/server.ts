@@ -1,11 +1,9 @@
-import dotenv from 'dotenv'
+import './config'
 import http from 'http'
 import express from 'express'
 import { applyMiddleware, applyRoutes } from './utils'
 import routes from './routes'
 import middleware from './middleware'
-
-dotenv.config()
 
 const router = express()
 applyMiddleware(middleware, router)
