@@ -40,11 +40,7 @@ SqlMarket.init({
 })
 
 export const saveMarket: MarketRepository.SaveMarket = async (market) => {
-  try {
-    await SqlMarket.create(market)
-  } catch (e) {
-    console.error(e)
-  }
+  await SqlMarket.create(market)
 }
 
 export const findMarket: MarketRepository.FindMarket = async (id) => {
