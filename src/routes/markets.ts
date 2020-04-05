@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { addOffer, createNewMarket, findMarket } from '../injected-usecase/market'
+import { addOffer, createNewMarket, findMarket, findActiveOffersOfMarket } from '../injected-usecase/market'
 
 export default [
   {
@@ -44,6 +44,17 @@ export default [
       res
         .status(201)
         .json(offer)
+    }
+  },
+  {
+    path: '/api/v1/markets/:id/offers/active',
+    method: 'get',
+    handler: async (req: Request, res: Response): Promise<void> => {
+      const offers = await findActiveOffersOfMarket(req.params.id)
+
+      res
+        .status(200)
+        .json(offers)
     }
   }
 ]
