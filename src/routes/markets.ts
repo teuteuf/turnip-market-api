@@ -47,6 +47,24 @@ export default [
     }
   },
   {
+    path: '/api/v1/markets/:id/offers',
+    method: 'get',
+    handler: async (req: Request, res: Response): Promise<void> => {
+      const market = await findMarket(req.params.id)
+
+      if (!market) {
+        res
+          .status(200)
+          .json([])
+        return
+      }
+
+      res
+        .status(200)
+        .json(market.offers)
+    }
+  },
+  {
     path: '/api/v1/markets/:id/offers/active',
     method: 'get',
     handler: async (req: Request, res: Response): Promise<void> => {
