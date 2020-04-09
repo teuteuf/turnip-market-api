@@ -10,7 +10,7 @@ export const createNewMarketBuilder = (
     const market: Market = {
       id: generateId(),
       name: marketName,
-      offers: []
+      activeOffers: []
     }
     await saveMarket(market)
     return market

@@ -19,5 +19,5 @@ export const addOffer = addOfferBuilder(
 )
 
 export const findActiveOffersOfMarket = findActiveOffersOfMarketBuilder(
-  SqlMarketRepository.findMarket
+  SqlMarketRepository.findActiveOffersOfMarket
 )

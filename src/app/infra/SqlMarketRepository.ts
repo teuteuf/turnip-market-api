@@ -1,8 +1,6 @@
 import * as MarketRepository from '../domain/MarketRepository'
-import { Market } from '../domain/Market'
-import { DataTypes, Model } from 'sequelize'
+import { DataTypes, Model, Op } from 'sequelize'
 import { sequelize } from './Sequelize'
-import { Offer } from '../domain/Offer'
 
 sequelize.define('market', {
   id: {
@@ -92,27 +90,36 @@ export const saveMarket: MarketRepository.SaveMarket = async (market) => {
   })
 }
 
+export const findActiveOffersOfMarket: MarketRepository.FindActiveOffersOfMarket = async (marketId) => {
+  const now = new Date()
+  const sqlActiveOffers: SqlOffer[] = await SqlOffer.findAll({
+    where: {
+      marketId: marketId,
+      startTime: { [Op.lt]: now },
+      endTime: { [Op.gt]: now }
+    }
+  })
+
+  return sqlActiveOffers.map(({ player, startTime, endTime, price }) => ({
+    player,
+    startTime,
+    endTime,
+    price
+  }))
+}
+
 export const findMarket: MarketRepository.FindMarket = async (id) => {
   const sqlMarket = await SqlMarket.findByPk(id)
   if (!sqlMarket) {
     return undefined
   }
 
-  const sqlOffers: SqlOffer[] = await SqlOffer.findAll({
-    where: {
-      marketId: id
-    }
-  })
+  const activeOffers = await findActiveOffersOfMarket(id)
 
   return {
-    id: sqlMarket.id as string,
-    name: sqlMarket.name as string,
-    offers: sqlOffers.map((sqlOffer) => ({
-      player: sqlOffer.player,
-      startTime: sqlOffer.startTime,
-      endTime: sqlOffer.endTime,
-      price: sqlOffer.price
-    }))
+    id: sqlMarket.id,
+    name: sqlMarket.name,
+    activeOffers
   }
 }
 
