@@ -2,20 +2,6 @@ import * as MarketRepository from '../domain/MarketRepository'
 import { DataTypes, Model, Op } from 'sequelize'
 import { sequelize } from './Sequelize'
 
-sequelize.define('market', {
-  id: {
-    type: DataTypes.STRING,
-    primaryKey: true
-  },
-  name: {
-    type: DataTypes.STRING
-  }
-}, {
-  freezeTableName: true,
-  createdAt: false,
-  updatedAt: false
-})
-
 class SqlMarket extends Model<SqlMarket> {
   id!: string
   name!: string
