@@ -110,7 +110,7 @@ export const findMarket: MarketRepository.FindMarket = async (id) => {
 }
 
 export const addMarketOffer: MarketRepository.AddMarketOffer = async (marketId, offer) => {
-  await SqlOffer.create({
+  await SqlOffer.upsert({
     marketId: marketId,
     ...offer
   })
